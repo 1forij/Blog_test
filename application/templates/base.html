@@ -76,6 +76,12 @@
             color:white;
             cursor: pointer;
         }
+        .hint{
+            width: auto;
+            background: red;
+            color:white;
+            margin-bottom: 20px;
+        }
     </style>
     {% block head %}
 
@@ -93,14 +99,11 @@
                     <li> <a href="#">博客介绍</a> </li>
                     <li> <a href="{{ url_for('main.index') }}">博客主页</a> </li>
                     <li> <a href="#">生活记事</a> </li>
-                {% if request.cookies['yourName'] %}
-                    <li> <a href="#">{{request.cookies['yourName']}}的个人空间</a> </li>
-                {% else %}
-                    <li> <a href="{{url_for('auth.login')}}">登录</a></li>
-                {% endif %}
-                {% if request.cookies['yourName'] %}
+                {% if current_user.is_authenticated %}{# is_authenticated  判断是否已授权登录 #}
+                    <li> <a href="#">{{ current_user.username }}的个人空间</a> </li>
                     <li> <a href="{{url_for('auth.logout')}}">退出登录</a></li>
                 {% else %}
+                    <li> <a href="{{url_for('auth.login')}}">登录</a></li>
                     <li><a href="{{url_for('auth.register')}}">注册</a></li>
                 {% endif %}
                 </ul>
@@ -122,3 +125,15 @@
     </footer>
 </body>
 </html>
+
+
+{#{% if request.cookies['yourName'] %}            用cookie时的写法#}
+{#    <li> <a href="#">{{request.cookies['yourName']}}的个人空间</a> </li>#}
+{#{% else %}#}
+{#    <li> <a href="{{url_for('auth.login')}}">登录</a></li>#}
+{#{% endif %}#}
+{#{% if request.cookies['yourName'] %}#}
+{#    <li> <a href="{{url_for('auth.logout')}}">退出登录</a></li>#}
+{#{% else %}#}
+{#    <li><a href="{{url_for('auth.register')}}">注册</a></li>#}
+{#{% endif %}#}

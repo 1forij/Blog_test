@@ -1,6 +1,6 @@
 import random
-from werkzeug.datastructures import RequestCacheControl
-from flask import redirect,render_template,flash, session
+from flask_login import login_user, logout_user
+from flask import redirect, render_template, flash, session, jsonify, request
 from . import auth_blue
 
 from .forms import LoginForm,RegisterForm
@@ -19,33 +19,25 @@ def login():
         in_name=fm.username.data
         in_word=fm.password.data
         in_code=fm.proofcode.data
-
         if in_code==session['proof']:
             u_search=User.query.filter(User.username==in_name).first()
-            if u_search is not None and in_word == u_search.password:
-                print(u_search.password)
-                # 设置cookie
-                response=redirect('/')
-                response.set_cookie('yourName',in_name,max_age=10000)
-                response.set_cookie('yourPassword',in_word,max_age=10000)
-                return response
+            if u_search is not None:
+                login_user(u_search,True)#              登录  并记住我
+                flash("欢迎回来，用户 {}！".format(in_name))#       最好实现成那种自动消失的flash
+                return redirect('/')
             else:
-                flash("用户不存在!")
-                proofcode=str(random.randint(1111,9999))
-                session['proof']=proofcode
-                return render_template('login.html',form=fm,rn=proofcode)
-
-    proofcode=str(random.randint(1111,9999))
-    session['proof']=proofcode
-    return render_template('login.html',form=fm,rn=proofcode)
+                flash("账户不存在,请重新登录")
+                return render_template('login.html',form=fm)#   没有这个账号
+        else:#                  验证码都不对
+            flash("请注意验证码")
+            return redirect('/login')
+    return render_template('login.html',form=fm)
 
 # 登出
 @auth_blue.route('/logout')
 def logout():
-    logout_res = redirect('/')
-    logout_res.delete_cookie('yourName')
-    logout_res.delete_cookie('yourPassword')
-    return logout_res
+    logout_user()
+    return redirect('/')
 
 # 注册
 @auth_blue.route('/register',methods=['POST','GET'])
@@ -57,6 +49,10 @@ def register():
         in_phone=fm.phonenum.data
         in_code=fm.proofcode.data
         if in_code==session['proof']:
+            query_user=u = User.query.filter_by(username=in_name).first()
+            if query_user:
+                flash('该用户名已存在!')
+                return redirect('/register')
             new_user=User(username=in_name,password=in_word,phonenum=in_phone)
             db.session.add(new_user)
             db.session.commit()
@@ -65,15 +61,11 @@ def register():
             response.set_cookie('yourName',in_name,max_age=10000)
             response.set_cookie('yourPassword',in_word,max_age=10000)
             return response
-    proofcode=str(random.randint(1111,9999))
-    session['proof']=proofcode
-    return render_template('register.html',form=fm,rn=proofcode)
+    return render_template('register.html',form=fm)
 
 # 送码
 @auth_blue.route('/getcode')
 def getcode():
     proofcode = str(random.randint(1111, 9999))
     session['proof']=proofcode
-    print(proofcode)
-    # return '<label id="code">{}<label>'.format(proofcode)
-    return proofcode
+    return jsonify({"code":proofcode})

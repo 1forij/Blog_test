@@ -9,6 +9,9 @@
 {% endblock %}
 
 {% block body %}
+    {% for message in get_flashed_messages() %}
+    <div class="hint">{{ message }}</div>
+    {% endfor %}
 <p>
     这就是主页了，好像什么东西都没有啊~~~
     啊哈哈
