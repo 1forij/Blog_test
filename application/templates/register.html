@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <style>
+        .login-box{
+            margin-top: 80px;
+            width: 100%;
+            height: auto;
+            text-align:center;
+            margin-bottom: 100px;
+        }
+        .getin{
+            margin-top: 10px;
+            width: 200px;
+            height: 30px;
+        }
+        .button{
+            margin-top: 20px;
+            width: 100px;
+            height: 30px;
+
+        }
+    </style>
+    <link rel="stylesheet" href="">
+    <script></script>
+{% endblock %}
+
+{% block title %}
+注册Register
+{% endblock %}
+
+{% block body %}
+
+<div class="login-box">
+    <form method="POST" novalidate><!-- novalidate 属性规定当提交表单时不对其进行验证。 -->
+        {{ form.hidden_tag() }}
+        <!-- 生成一个隐藏字段，其中包括用来防止CSRF攻击的令牌 -->
+        <label for="">本次验证码:{{rn}}</label><br>
+        {{form.username(class="getin",placeholder="将要注册的用户名",autofocus="")}}<br>
+        {{form.phonenum(class="getin",placeholder="手机号")}}<br>
+        {{form.password(class="getin",placeholder="密码")}}<br>
+        {{form.proofcode(class="getin",placeholder="验证码")}}<br>
+        {{form.submit(class="button")}}
+    </form>
+</div>
+
+{% endblock %}
+

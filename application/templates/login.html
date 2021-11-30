@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <style>
+        .login-box{
+            margin-top: 80px;
+            width: 100%;
+            height: auto;
+            text-align:center;
+            margin-bottom: 100px;
+        }
+        .getin{
+            margin-top: 10px;
+            width: 200px;
+            height: 30px;
+        }
+        .button{
+            margin-top: 20px;
+            width: 100px;
+            height: 30px;
+
+        }
+    </style>
+
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+    <script>
+
+        $(function(){
+      $("#code").click(function(){
+        $(this).load("http://127.0.0.1:5000/getcode #code")
+      });
+    });
+
+    </script>
+{% endblock %}
+
+{% block title %}
+登录Login
+{% endblock %}
+
+{% block body %}
+
+<div class="login-box">
+    <form method="POST" novalidate><!-- novalidate 属性规定当提交表单时不对其进行验证。 -->
+        {{ form.hidden_tag() }}
+        <!-- 生成一个隐藏字段，其中包括用来防止CSRF攻击的令牌 -->
+        <label id="code">本次验证码:{{rn}}</label><br>
+        {{form.username(class="getin",placeholder="用户名",autofocus="")}}<br>
+        {{form.password(class="getin",placeholder="密码")}}<br>
+        {{form.proofcode(class="getin",placeholder="验证码")}}<br>
+        {{form.submit(class="button")}}
+    </form>
+</div>
+
+{% endblock %}
+

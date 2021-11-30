@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+    <script>
+    $(function(){
+      $("#123").click(function(){
+        $(this).hide();
+      });
+    });
+    $(function () {
+        $("a").click(function () {
+            $(this).hide()
+        })
+    })
+    $(document).ready(function(){
+  $("label").click(function(){
+    $.get("http://127.0.0.1:5000/getcode",function(responseTxt){
+        $("#44").text(responseTxt)
+    },'text');
+  });
+});
+
+    </script>
+</head>
+<body>
+<p id="123">如果你点我，我就会消失。</p>
+<p>继续点我!</p>
+<p id="44">接着点我!</p>
+<label for="" id="14">
+触发
+</label>
+
+
+<p>
+    可以触发
+    $(function(){
+  $("#code").click(function(){
+    $(this).load("http://127.0.0.1:5000/getcode #code")
+  });
+});
+
+            $(function(){
+          $("label").click(function(){
+            $(this).load("http://127.0.0.1:5000/getcode")
+          });
+        });
+
+
+
+</p>
+</body>
+</html>

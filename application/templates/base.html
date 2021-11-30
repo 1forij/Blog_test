@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        * {
+            margin: 0px;    
+            padding: 0px;
+            background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%) no-repeat;
+        }
+        ul {
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        .foot-font,.head-font{
+            padding: 30px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-transform: uppercase;
+            text-indent: 2em;
+            color:darkgreen;
+            font-weight: bold;
+            }
+        .head-font{
+            font-size: 60px;
+            text-align: left;
+        }
+        .foot-font{
+            font-size: 40px;
+            text-align: center;
+        }
+        header {
+            /* position: relative; */
+            height: 200px;
+        }
+        div.banner {
+            width: 100%;
+            height: 150px;
+        }
+        /* 相对定位子级 */
+        /* 将导航栏定位到banner下面 */
+        /* 设置宽高 */
+        
+/* 导航条 */
+        nav {
+            width: 100%;
+            height: 32px;
+            background-color: red;
+            position: absolute;
+            top: 150px;
+        }
+        /* 设置左浮动，宽高，文字样式 */
+        
+        nav ul li {
+            float: left;
+            height: 50px;
+            width: 20%;
+            text-align: center;
+            color: linear-gradient(141, 199, 7);
+            line-height: 50px;
+            font-size: 15px;
+            font: weight 500px ;
+            color:royalblue;
+
+        }
+        .half{
+            width: 10%;
+        }
+        /* 鼠标移动上色，变成手的模样 */
+        
+        nav ul li:hover {
+            color:white;
+            cursor: pointer;
+        }
+    </style>
+    {% block head %}
+
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <div class="banner">
+            <h4 class="head-font">wellcome to my website !</h4>
+        </div>
+        <div class="daohang">
+            <nav>
+                <ul>
+                    <!-- url_for('蓝图名.函数名') -->
+                    <li> <a href="#">博客介绍</a> </li>
+                    <li> <a href="{{ url_for('main.index') }}">博客主页</a> </li>
+                    <li> <a href="#">生活记事</a> </li>
+                {% if request.cookies['yourName'] %}
+                    <li> <a href="#">{{request.cookies['yourName']}}的个人空间</a> </li>
+                {% else %}
+                    <li> <a href="{{url_for('auth.login')}}">登录</a></li>
+                {% endif %}
+                {% if request.cookies['yourName'] %}
+                    <li> <a href="{{url_for('auth.logout')}}">退出登录</a></li>
+                {% else %}
+                    <li><a href="{{url_for('auth.register')}}">注册</a></li>
+                {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <hr>
+
+    <div style="height: 500px;">
+        {% block body %}
+
+        {% endblock %}
+    </div>
+   
+
+    <hr>
+    <footer>
+        <h2 class="foot-font">thanks for every dalao.</h2>
+    </footer>
+</body>
+</html>
