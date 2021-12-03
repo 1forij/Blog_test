@@ -23,8 +23,6 @@
 
     </style>
 
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-
     <script>
     $(function(){
         $("#code").click(function(){
@@ -45,7 +43,7 @@
 
 <div class="login-box">
     {% for message in get_flashed_messages() %}
-    <div class="hint">{{ message }}</div>
+    <div class="hint" id="hint_box">{{ message }}</div>
     {% endfor %}
     <form method="POST" novalidate><!-- novalidate 属性规定当提交表单时不对其进行验证。 -->
         {{ form.hidden_tag() }}

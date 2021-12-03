@@ -1,0 +1,4 @@
+cd f:/adress
+git add -A
+git commit -m "提交时间"
+git push first master
