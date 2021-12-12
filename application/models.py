@@ -12,13 +12,14 @@ class User(UserMixin,db.Model):# 定义的这个User类，类似于一个货架
     username=db.Column(db.String(30),nullable=False)# 不为空
     _password_hash=db.Column(db.String(256))
     phonenum=db.Column(db.Integer,nullable=False)
+    email_ad=db.Column(db.String(30))
 
     @property
     def password(self):#    用户调用密码,能看(哈希值)不能改   使得password == self._password_hash
         return self._password_hash
 
     @password.setter#   存储密码于db  and  修改密码
-    def password(self, in_word):
+    def set_password(self, in_word):
         self._password_hash = generate_password_hash(in_word)
 
 

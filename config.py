@@ -9,6 +9,15 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # 邮件配置
+    MAIL_SERVER = 'smtp.qq.com'
+    MAIL_PROT = 465
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+    MAIL_USERNAME = "329686980@qq.com"
+    MAIL_PASSWORD = "hzxubbkivwilbghf"
+    MAIL_DEFAULT_SENDER = "329686980@qq.com"
+
     @staticmethod # 使类不需要实例化就可以被调用
     def init_app(app):
         pass

@@ -2,3 +2,6 @@ cd f:/adress
 git add -A
 git commit -m "提交时间"
 git push first master
+
+
+git console的粘贴快捷键  shift+insert

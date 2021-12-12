@@ -1,17 +1,32 @@
 {% extends 'base.html' %}
 
-{% block head %}
 
-{% endblock %}
 
 {% block title %}
 个人空间
 {% endblock %}
 
-{% block body %}
-<p>
-    个人空间，好像什么东西都没有啊~~~
-    啊哈哈
-</p>
-{% endblock %}
 
+
+{% block content %}
+<div class="jumbotron">
+  <a href="#">
+      <img src="../static/imgs/users.jpg" alt="error，无法显示" title="点击上传自定义头像" class="img-rounded">
+  </a>
+
+  <h1 style="display: inline;margin-left: 20px;",>{{ current_user.username }}</h1>
+   <h3><span class="label label-default">个性签名</span></h3>
+
+{#  <p style="display: inline;" class=""><a class="btn btn-primary btn-success" href="#" role="button">修改个人信息</p>#}
+    <div class="btn-group" role="group" aria-label="..." style="display: inline">
+        <a href="#"><button type="button" class="btn btn-default">我的关注</button></a>
+        <a href="#"><button type="button" class="btn btn-default">我的粉丝</button></a>
+        <a href="#"><button type="button" class="btn btn-default">我的文章</button></a>
+        <a href="#"><button type="button" class="btn btn-default">我的资料</button></a>
+        <a href="#"><button type="button" class="btn btn-default">我的收藏</button></a>
+        <a href="#"><button type="button" class="btn btn-danger">修改个人信息</button></a>
+    </div>
+</div>
+
+
+{% endblock %}

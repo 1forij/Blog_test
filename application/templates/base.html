@@ -1,86 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
+{%extends "bootstrap/base.html"%}
+
+
+
+{#DIY_css+js#}
+{%block head %}
+{{ super() }}
     <style>
         * {
-            margin: 0px;    
+            margin: 0px;
             padding: 0px;
             background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%) no-repeat;
         }
-        ul {
-            list-style: none;
-        }
-        a{
-            text-decoration: none;
-        }
-        .foot-font,.head-font{
-            padding: 30px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-transform: uppercase;
-            text-indent: 2em;
-            color:darkgreen;
-            font-weight: bold;
-            }
-        .head-font{
-            font-size: 60px;
-            text-align: left;
-        }
-        .foot-font{
-            font-size: 40px;
-            text-align: center;
-        }
-        header {
-            /* position: relative; */
-            height: 200px;
-        }
-        div.banner {
-            width: 100%;
-            height: 150px;
-        }
-        /* 相对定位子级 */
-        /* 将导航栏定位到banner下面 */
-        /* 设置宽高 */
-        
-/* 导航条 */
-        nav {
-            width: 100%;
-            height: 32px;
-            background-color: red;
-            position: absolute;
-            top: 150px;
-        }
-        /* 设置左浮动，宽高，文字样式 */
-        
-        nav ul li {
-            float: left;
-            height: 50px;
-            width: 20%;
-            text-align: center;
-            color: linear-gradient(141, 199, 7);
-            line-height: 50px;
-            font-size: 15px;
-            font: weight 500px ;
-            color:royalblue;
 
+        {#页脚css#}
+        .foot-font{
+        font-size: 40px;
+        text-align: center;
         }
-        .half{
-            width: 10%;
-        }
-        /* 鼠标移动上色，变成手的模样 */
-        
-        nav ul li:hover {
-            color:white;
-            cursor: pointer;
-        }
+
+        {#flash消息css#}
         .hint{
             width: auto;
             background: red;
             color:white;
             margin-bottom: 20px;
+        }
+
+        {#login/register的css#}
+
+        .login-box{
+            margin-top: 80px;
+            width: 100%;
+            height: auto;
+            text-align:center;
+            margin-bottom: 100px;
+        }
+        .getin{
+            margin-top: 10px;
+            width: 200px;
+            height: 30px;
+        }
+        .button{
+            margin-top: 20px;
+            width: 100px;
+            height: 30px;
+
         }
     </style>
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
@@ -89,57 +53,93 @@
             $("#hint_box").hide();
         }, 3000);
     </script>
-    {% block head %}
+{% endblock %}
 
-    {% endblock %}
-</head>
-<body>
-    <header>
-        <div class="banner">
-            <h4 class="head-font">wellcome to my website !</h4>
-        </div>
-        <div class="daohang">
-            <nav>
-                <ul>
-                    <!-- url_for('蓝图名.函数名') -->
-                    <li> <a href="#">博客介绍</a> </li>
-                    <li> <a href="{{ url_for('main.index') }}">博客主页</a> </li>
-                    <li> <a href="#">生活记事</a> </li>
-                {% if current_user.is_authenticated %}{# is_authenticated  判断是否已授权登录 #}
-                    <li> <a href="#">{{ current_user.username }}的个人空间</a> </li>
-                    <li> <a href="{{url_for('auth.logout')}}">退出登录</a></li>
-                {% else %}
-                    <li> <a href="{{url_for('auth.login')}}">登录</a></li>
-                    <li><a href="{{url_for('auth.register')}}">注册</a></li>
-                {% endif %}
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <hr>
 
-    <div style="height: 500px;">
-        {% block body %}
 
-        {% endblock %}
+{#界面标题#}
+{%block title %}
+
+{% endblock %}
+
+
+
+{#界面导航条#}
+{%block navbar %}
+<nav class="navbar navbar-default">
+{# 适应手机端 #}
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Forij的博客</a>
     </div>
-   
 
-    <hr>
-    <footer>
-        <h2 class="foot-font">thanks for every dalao.</h2>
-    </footer>
-</body>
-</html>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    {# nav主要内容 #}
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('main.index') }}">首页</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">分类<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">学习笔记</a></li>
+              <li role="separator" class="divider"></li>
+            <li><a href="#">生活记事</a></li>
+              <li role="separator" class="divider"></li>
+            <li><a href="#">未知领域</a></li>
+              <li role="separator" class="divider"></li>
+            <li><a href="#">奇思妙想</a></li>
+              <li role="separator" class="divider"></li>
+            <li><a href="#">其他杂项</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="想知道什么?">
+        </div>
+          <button type="submit" class="btn btn-default">搜一搜</button>
+      </form>
+    {% if current_user.is_authenticated %}
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.username }}的个人空间<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{{url_for('admin.user_space')}}">空间</a></li>
+            <li><a href="#">关注列表</a></li>
+            <li><a href="#">动态</a></li>
+            <li role="separator" class="divider"></li>{# 分界线 #}
+            <li><a href="#">消息</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{{ url_for('auth.logout') }}">退出登录</a></li>
+          </ul>
+        </li>
+      </ul>
+    {% else %}
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">登录/注册<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+                <li> <a href="{{url_for('auth.login')}}">登录</a></li>
+                <li><a href="{{url_for('auth.register')}}">注册</a></li>
+          </ul>
+        </li>
+      </ul>
+    {% endif %}
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+{% endblock %}
 
 
-{#{% if request.cookies['yourName'] %}            用cookie时的写法#}
-{#    <li> <a href="#">{{request.cookies['yourName']}}的个人空间</a> </li>#}
-{#{% else %}#}
-{#    <li> <a href="{{url_for('auth.login')}}">登录</a></li>#}
-{#{% endif %}#}
-{#{% if request.cookies['yourName'] %}#}
-{#    <li> <a href="{{url_for('auth.logout')}}">退出登录</a></li>#}
-{#{% else %}#}
-{#    <li><a href="{{url_for('auth.register')}}">注册</a></li>#}
-{#{% endif %}#}
+
+{% block content %}
+
+{% endblock %}

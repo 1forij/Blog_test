@@ -12,4 +12,5 @@ class RegisterForm(FlaskForm):
     password=PasswordField(validators=[DataRequired()])
     phonenum=StringField(validators=[DataRequired()])
     proofcode=StringField(validators=[DataRequired()])
+    email_ad=StringField(validators=[DataRequired()])
     submit=SubmitField('注册')

@@ -1,4 +1,5 @@
-import random
+# coding=utf-8
+import random,json
 from flask_login import login_user, logout_user
 from flask import redirect, render_template, flash, session, jsonify, request
 from . import auth_blue
@@ -6,6 +7,8 @@ from . import auth_blue
 from .forms import LoginForm,RegisterForm
 from application import db
 from application.models import User
+from flask_mail import Message
+from application import my_email
 '''
 1.密码不能明文丢数据库---hash
 2.使用flask_login
@@ -46,13 +49,15 @@ def register():
         in_name=fm.username.data
         in_word=fm.password.data
         in_phone=fm.phonenum.data
-        in_code=fm.proofcode.data
-        if in_code==session['proof']:
+        in_code=fm.proofcode.data # 这里 in_code 是 邮箱验证码
+        in_email=fm.email_ad.data
+        if in_code==session['email']:
             query_user= User.query.filter(User.username==in_name).first()
             if query_user:
                 flash('该用户名已存在!')
                 return redirect('/register')
-            new_user=User(username=in_name,password=in_word,phonenum=in_phone)# @property的存在，使得password == self._password_hash
+            new_user=User(username=in_name,phonenum=in_phone,email_ad=in_email)# @property的存在，使得password == self._password_hash
+            new_user.set_password=in_word
             db.session.add(new_user)
             db.session.commit()
             flash('恭喜你，注册成功,自动前往登录界面')
@@ -66,3 +71,22 @@ def getcode():
     proofcode = str(random.randint(1111, 9999))
     session['proof']=proofcode
     return jsonify({"code":proofcode})
+
+# 送信    要求:判断邮箱是否合理
+@auth_blue.route('/send_email',methods=['POST'])
+def send_email():
+    # 准备工作
+    in_email_ad = request.get_data().decode()#　   将流转为str
+    in_email_ad = in_email_ad.replace("%40","@")#       把%40 换成@
+    in_email_ad = in_email_ad[12:]#                     掐头去尾
+
+    if "@qq.com" in in_email_ad:
+        email_num = str(random.randint(1111, 9999))
+        session['email']=email_num
+        meg = Message("欢迎!在Forij博客注册",recipients=[in_email_ad])
+        meg.body = "您此次的注册验证码为 %s" % email_num
+        my_email.send(meg)
+        return jsonify({"ok":"1"})
+    else:
+        flash("邮箱有误,请重新输入")
+        return jsonify({"error": "0"})

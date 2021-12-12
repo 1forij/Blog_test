@@ -1,61 +1,59 @@
 {% extends 'base.html' %}
 
+
+
 {% block head %}
-    <style>
-        .login-box{
-            margin-top: 80px;
-            width: 100%;
-            height: auto;
-            text-align:center;
-            margin-bottom: 100px;
-        }
-        .getin{
-            margin-top: 10px;
-            width: 200px;
-            height: 30px;
-        }
-        .button{
-            margin-top: 20px;
-            width: 100px;
-            height: 30px;
-
-        }
-    </style>
-    <link rel="stylesheet" href="">
-
+{{ super() }}
     <script>
-    $(function(){
-        $("#code").click(function(){
-            $.get("http://127.0.0.1:5000/getcode",function (data) {
-                $("p").text(data["code"])
-    })
-  });
-});
 
+        {#发送邮箱验证码请求#}
+        $(function(){
+            $("#code").click(function(){
+                if($("#email_ad").val()==="")
+                    $("#code").text("请先输入QQ邮箱地址")
+                else
+                {
+                  $.post("http://127.0.0.1:5000/send_email",
+                    {
+                        in_email_ad : $("#email_ad").val()
+                    });
+                    $("#code").attr("disabled","disabled")
+                    $("#code").text("验证码已发送,若一分钟后未收到可重试")
+                }
+          });
+        });
+        setTimeout(function () {
+                $("#code").removeAttr("disabled")
+                $("#code").text("点击发送验证码")
+            }, 60000);
     </script>
+
 {% endblock %}
+
+
 
 {% block title %}
 注册Register
 {% endblock %}
 
-{% block body %}
+
+
+{% block content %}
+    {# 错误信息提示 #}
     {% for message in get_flashed_messages() %}
     <div class="hint" id="hint_box">{{ message }}</div>
     {% endfor %}
+
 <div class="login-box">
     <form method="POST" novalidate><!-- novalidate 属性规定当提交表单时不对其进行验证。 -->
         {{ form.hidden_tag() }}
         <!-- 生成一个隐藏字段，其中包括用来防止CSRF攻击的令牌 -->
-        <label id="code">点击本段文字获取验证码</label>
-        <p></p>
         {{form.username(class="getin",placeholder="将要注册的用户名",autofocus="")}}<br>
         {{form.phonenum(class="getin",placeholder="手机号")}}<br>
         {{form.password(class="getin",placeholder="密码")}}<br>
-        {{form.proofcode(class="getin",placeholder="验证码")}}<br>
-        {{form.submit(class="button")}}
+        {{form.email_ad(class="getin",placeholder="邮箱地址")}}<br>
+        {{form.proofcode(class="getin",placeholder="邮箱验证码")}}<br>
+        {{form.submit(class="button")}}<button id="code" type="button" class="btn btn-success" style="margin-left: 30px">获取验证码</button>
     </form>
 </div>
-
 {% endblock %}
-
