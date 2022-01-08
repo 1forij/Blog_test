@@ -25,6 +25,7 @@ def login():
             u_search=User.query.filter(User.username==in_name).first()
             if u_search is not None and u_search.check_password(in_word):# 注意这里：密码判断这里要写实例化后的方法(即u_seaech.某方法),不能写User.某方法
                 login_user(u_search,True)#              登录  并记住我
+                session["user"]=in_name
                 flash("欢迎回来，用户 {}！".format(in_name))#       最好实现成那种自动消失的flash
                 return redirect('/')
             else:
@@ -33,7 +34,7 @@ def login():
         else:#                  验证码都不对
             flash("请注意验证码")
             return redirect('/login')
-    return render_template('login.html',form=fm)
+    return render_template('/auth/login.html',form=fm)
 
 # 登出
 @auth_blue.route('/logout')
@@ -63,7 +64,7 @@ def register():
             flash('恭喜你，注册成功,自动前往登录界面')
 
             return redirect('/login')
-    return render_template('register.html',form=fm)
+    return render_template('/auth/register.html',form=fm)
 
 # 送码
 @auth_blue.route('/getcode')
@@ -83,8 +84,8 @@ def send_email():
     if "@qq.com" in in_email_ad:
         email_num = str(random.randint(1111, 9999))
         session['email']=email_num
-        meg = Message("欢迎!在Forij博客注册",recipients=[in_email_ad])
-        meg.body = "您此次的注册验证码为 %s" % email_num
+        meg = Message("欢迎!这里是Forij博客",recipients=[in_email_ad])
+        meg.body = "您此次的操作的相关验证码为 %s" % email_num
         my_email.send(meg)
         return jsonify({"ok":"1"})
     else:

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+写博客
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+<form method="post" action="{{ url_for('.create_post') }}">
+    {{ form.hidden_tag() }}
+
+    {{ form.title(class="form-control",placeholder="Have a title") }}
+
+    <div id="editormd" class="form-control">
+    {{ form.body(style="display:none;") }}
+    </div>
+    {{form.submit(class="button")}}
+</form>
+</div>>
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
+    <script type="text/javascript">
+
+    var testEditor;
+    $(function () {
+        testEditor = editormd("editormd", {
+            width: "90%",
+            height: 640,
+            syncScrolling: "single",
+            path: "{{ url_for('static',filename='editormd/lib/') }}"
+        });
+    });
+</script>
+
+    <style>
+    *{
+        background:whitesmoke;
+    }
+    </style>
+
+{% endblock %}

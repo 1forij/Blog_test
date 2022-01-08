@@ -1,18 +1,19 @@
 from . import admin_blue
-from .forms import ChangePsd
-from flask import session, render_template, redirect, flash
+from .forms import ChangePsd,Upload_img
+from flask import session, render_template, redirect, flash, request, jsonify ,session
 from flask_login import login_required
 from application import db
 from application.models import User
-
+import base64,os
+from werkzeug.utils import secure_filename
 
 
 
 # 个人主页
-@admin_blue.route('/usersapce')
+@admin_blue.route('/userspace')
 @login_required
 def user_space():
-    return render_template("myspace.html")
+    return render_template("/admin/myspace.html")
 
 
 
@@ -38,4 +39,59 @@ def chg_psd():
                 flash("存在错误，请重试！")
                 return redirect('/chg_psd')
     else:
-        return render_template("change_password.html",form=fm)
+        return render_template("/admin/change_password.html",form=fm)
+
+@admin_blue.route('/getinfo')
+def send_info():
+    get_data = request.args.to_dict()
+    request_type = get_data.get("request_type")
+    request_user = get_data.get("request_user")
+
+    if request_type =="following":
+        pass
+    elif request_type =="fans":
+        pass
+    elif request_type =="article":
+        pass
+    elif request_type =="info":
+        query_user = User.query.filter_by(username=request_user).first()
+
+        temp={}
+
+        temp["send_username"]=query_user.username
+
+        temp["send_sex"]="男"
+
+        temp["send_phonenum"]=query_user.phonenum
+
+        temp["send_emial"]=query_user.email_ad
+
+        temp["send_labels"]="<睡觉>   <摸鱼>    <上号>"
+
+        return jsonify(temp)
+    else:
+        pass
+
+@admin_blue.route('/upload',methods=['POST','GET'])# 获取用户名-----气死
+def upload():#          文件格式没做筛选
+    form = Upload_img()
+    if request.method=="POST":
+
+        # 获取用户名
+        in_name = session["user"]#   实在实现不了post接收总是None，索性直接 全局session 保存一下得了
+
+        # 获取类型为 <class 'werkzeug.datastructures.FileStorage'> 的文件
+        user_img_Storage = request.files["user_img"]
+
+        # 将上一步的文件 转化 为 bytes stream
+        user_img_stream = user_img_Storage.stream.read()
+
+        # 转化为 base64 编码字符
+        image_base64 = str(base64.b64encode(user_img_stream), encoding='utf-8')  # image_base64即是对图像进行base64编码后的内容
+        # 存入 数据库
+        query_user = User.query.filter_by(username=in_name).first()
+
+        query_user.user_img=image_base64
+
+        return redirect('/userspace')
+    return render_template('/admin/upload.html', form=form)

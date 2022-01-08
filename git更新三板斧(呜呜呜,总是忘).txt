@@ -5,3 +5,9 @@ git push first master
 
 
 git console的粘贴快捷键  shift+insert
+
+
+admin       个人空间的操作
+auth        用户管理
+blog        博客操作
+main        主页

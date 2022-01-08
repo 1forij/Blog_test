@@ -1,0 +1,7 @@
+<div class="login-box">
+    <form method="POST" enctype="multipart/form-data"><!-- novalidate 属性规定当提交表单时不对其进行验证。 -->
+        {{ form.hidden_tag() }}
+        {{form.user_img}}<br><br>
+        {{form.submit}}
+    </form>
+</div>

@@ -1,0 +1,95 @@
+{# 错误的模板思路 /doge #}
+
+{% extends 'base.html' %}
+
+
+
+{% block title %}
+个人空间
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+    <script>
+    $(function(){
+        $("#info").click(function(){
+            $("#show_box").load("../templates/info.html");
+            $.get("http://127.0.0.1:5000/getinfo",{request_type:"info"},function (data) {
+                    {#$("#show_box").html(data["info"])#}
+                    console.log(data["info"])
+            })
+        });
+    });
+    </script>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="jumbotron">
+      <a href="#">
+          <img src="../static/imgs/users.jpg" alt="error，无法显示" title="点击上传自定义头像" class="img-rounded">
+      </a>
+
+      <h1 style="display: inline;margin-left: 20px;",>{{ current_user.username }}</h1>
+       <h3><span class="label label-default">个性签名</span></h3>
+
+        <div class="btn-group" role="group" aria-label="..." style="display: inline">
+            <button type="button" class="btn btn-default" id="following">我的关注</button>
+            <button type="button" class="btn btn-default" id="fans">我的粉丝</button>
+            <button type="button" class="btn btn-default" id="article">我的文章</button>
+            <button type="button" class="btn btn-default" id="info">我的资料</button>
+            <button type="button" class="btn btn-default" id="favo">我的收藏</button>
+            <a href="#" target="_blank"><button type="button" class="btn btn-danger">修改个人信息</button></a>
+        </div>
+
+        {# display box #}
+        <div class="panel panel-default">
+          <div class="panel-body" id="show_box">
+
+
+          </div>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{# 关注列表 #}
+{#                <div class="list-group">#}
+{#                  <a href="#" class="list-group-item">2</a>#}
+{#                  <a href="#" class="list-group-item">4</a>#}
+{#                  <a href="#" class="list-group-item">6</a>#}
+{#                  <a href="#" class="list-group-item">9</a>#}
+{#                </div>#}
+                {# 粉丝列表 #}
+{#                <div class="list-group">#}
+{#                  <a href="#" class="list-group-item">2</a>#}
+{#                  <a href="#" class="list-group-item">4</a>#}
+{#                  <a href="#" class="list-group-item">6</a>#}
+{#                  <a href="#" class="list-group-item">9</a>#}
+{#                </div>#}
+                {# 文章列表 #}
+{#                <div class="list-group">#}
+{#                  <a href="#" class="list-group-item">2</a>#}
+{#                  <a href="#" class="list-group-item">4</a>#}
+{#                  <a href="#" class="list-group-item">6</a>#}
+{#                  <a href="#" class="list-group-item">9</a>#}
+{#                </div>#}
+                {# 我的资料 #}
+{#                  <dl class ="dl-horizontal">#}
+{#                      <dt>邮箱地址</dt>#}
+{#                      <dd></dd> <br>#}
+{#                      <dt>爱好</dt>#}
+{#                      <dd>睡觉</dd> <br>#}
+{#                  </dl>#}
+                {# 我的收藏 #}
+{#                <div class="list-group">#}
+{#                  <a href="#" class="list-group-item">2</a>#}
+{#                  <a href="#" class="list-group-item">4</a>#}
+{#                  <a href="#" class="list-group-item">6</a>#}
+{#                  <a href="#" class="list-group-item">9</a>#}
+{#                </div>#}

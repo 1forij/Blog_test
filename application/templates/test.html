@@ -1,57 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>菜鸟教程(runoob.com)</title>
+{% extends 'base.html' %}
 
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+{% block title %}
+测试bootstrap页面
+{% endblock %}
 
-    <script>
-    $(function(){
-      $("#123").click(function(){
-        $(this).hide();
-      });
-    });
-    $(function () {
-        $("a").click(function () {
-            $(this).hide()
-        })
-    })
-    $(document).ready(function(){
-  $("label").click(function(){
-    $.get("http://127.0.0.1:5000/getcode",function(responseTxt){
-        $("#44").text(responseTxt)
-    },'text');
-  });
-});
+{% block content %}
 
-    </script>
-</head>
-<body>
-<p id="123">如果你点我，我就会消失。</p>
-<p>继续点我!</p>
-<p id="44">接着点我!</p>
-<label for="" id="14">
-触发
-</label>
+    <div class="container">
+        这是带距离的容器 <span class="lead">你信吗</span>
+
+    {#引用+描述(带有描述的短语列表。)#}
+    <blockquote>
+        <dl>
+            <dt>个性签名</dt>
+            <dd>没有，别看了</dd>
+        </dl>
+    </blockquote>
 
 
-<p>
-    可以触发
-    $(function(){
-  $("#code").click(function(){
-    $(this).load("http://127.0.0.1:5000/getcode #code")
-  });
-});
+{#  水平描述(可用于展示个人信息)  #}
+    <dl class="dl-horizontal">
+      <dt>邮箱地址</dt>
+      <dd>2292218440@qq.com</dd>
+        <br>
+      <dt>爱好</dt>
+      <dd>睡觉</dd>
+    </dl>
+{#  代码块?  #}
+<pre>
+#include"iostream"
+using namespace std;
+int main()
+{
+    int n,a[10];
+    cin>>n;
 
-            $(function(){
-          $("label").click(function(){
-            $(this).load("http://127.0.0.1:5000/getcode")
-          });
-        });
+    return 0;
+}
+</pre>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        Basic panel example
+      </div>
+    </div>
+    </div>
 
 
-
-</p>
-</body>
-</html>
+    <div class="container-fluid">
+        这是100%的容器
+    </div>
+{% endblock %}
