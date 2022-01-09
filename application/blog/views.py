@@ -15,7 +15,10 @@ def create_post():
 
         in_title = fm.title.data
         in_body = fm.body.data
-        new_article=Article(title=in_title,body=in_body,author=session["user"])
+        in_categories = fm.categories.data
+
+        new_article=Article(title=in_title,body=in_body,author=session["user"],categories=in_categories)
+
         db.session.add(new_article)
         db.session.commit()
         flash("发布成功")

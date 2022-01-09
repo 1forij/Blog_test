@@ -9,8 +9,34 @@
     {% for message in get_flashed_messages() %}
     <div class="hint" id="hint_box">{{ message }}</div>
     {% endfor %}
-<p>
-    这就是主页了，好像什么东西都没有啊~~~
-    啊哈哈
-</p>
+
+<div class="container">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading" style="padding-bottom: 0px;padding-top: 0px">
+            <label type="button" data-toggle="collapse" data-target="#demo">
+                <h3>{{ title }}</h3>
+            </label>
+        </div>
+
+        <div id="demo" class="collapse in">
+            {{ body_html|markdown|safe }}
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading" style="padding-bottom: 0px;padding-top: 0px">
+            <label type="button" data-toggle="collapse" data-target="#demo">
+                <h3>{{ title }}</h3>
+            </label>
+        </div>
+
+        <div id="demo" class="collapse in">
+            {{ body_html|markdown|safe }}
+        </div>
+    </div>
+
+</div>
+
+
 {% endblock %}

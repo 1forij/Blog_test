@@ -3,6 +3,10 @@ from flask_login import UserMixin
 from application import db
 from datetime import datetime
 from application import login_manager
+import bleach # 清除多余的html标签
+from markdown import markdown
+
+
 # 数据库类似于一个仓库
 class User(UserMixin,db.Model):# 定义的这个User类，类似于一个货架
     __tablename__ = 'user'
@@ -40,10 +44,19 @@ class Article(db.Model):
     title = db.Column(db.String(128))
     body = db.Column(db.Text)
     author = db.Column(db.Text)
-    body_html = db.Column(db.Text)
+    body_html = db.Column(db.Text)# 存放被转换成html格式的文本
     create_time = db.Column(db.DateTime, index=True, default=datetime.now)
-
+    categories = db.Column(db.String(20))
+    num_like = db.Column(db.Integer)
+    num_comment = db.Column(db.Integer)
+    num_visited = db.Column(db.Integer)
     @staticmethod
+
+    # 当某个方法不需要用到对象中的任何资源, 将这个方法改为一个静态方法, 加一个 @ staticmethod
+
+    # 加上之后, 这个方法就和普通的函数没有什么区别了, 只不过写在了一个类中, 可以使用这个类的对象调用,
+
+    # 也可以使用类直接调用,
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
@@ -51,6 +64,12 @@ class Article(db.Model):
         allowed_attrs = {'*': ['class'],
                          'a': ['href', 'rel'],
                          'img': ['src', 'alt']}
-        # target.body_html = bleach.linkify(bleach.clean(
-        #     markdown(value, output_format='html'),
-        #     tags=allowed_tags, strip=True, attributes=allowed_attrs))
+        target.body_html = bleach.linkify(# 作用是将html文本中的url转换成<a>
+                            bleach.clean(
+                            markdown(value, output_format='html'),
+                            tags=allowed_tags,
+                            strip=True,
+                            attributes=allowed_attrs
+                                )
+                            )
+db.event.listen(Article.body, 'set', Article.on_changed_body)

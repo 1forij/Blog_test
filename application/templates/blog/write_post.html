@@ -12,6 +12,7 @@
     {{ form.hidden_tag() }}
 
     {{ form.title(class="form-control",placeholder="Have a title") }}
+    {{ form.categories.label(style) }}{{ form.categories }}
 
     <div id="editormd" class="form-control">
     {{ form.body(style="display:none;") }}
