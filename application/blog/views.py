@@ -1,4 +1,4 @@
-from flask_login import login_required
+from flask_login import login_required,current_user
 from . import blog_blue
 from flask import render_template,redirect,session,flash
 from .forms import CreatePost
@@ -17,7 +17,7 @@ def create_post():
         in_body = fm.body.data
         in_categories = fm.categories.data
 
-        new_article=Article(title=in_title,body=in_body,author=session["user"],categories=in_categories)
+        new_article=Article(title=in_title,body=in_body,author_id=current_user.id,categories=in_categories)
 
         db.session.add(new_article)
         db.session.commit()

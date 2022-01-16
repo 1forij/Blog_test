@@ -17,11 +17,12 @@ class Config:
     MAIL_USERNAME = "329686980@qq.com"
     MAIL_PASSWORD = "hzxubbkivwilbghf"
     MAIL_DEFAULT_SENDER = "329686980@qq.com"
-
+    FLASKY_ADMIN =["329686980@qq.com"]
     @staticmethod # 使类不需要实例化就可以被调用
     def init_app(app):
         pass
-
+    # Admin UI
+    FLASK_ADMIN_SWATCH="cerulean"
 # 开发模式
 class Development(Config):
     DEBUG = True

@@ -11,30 +11,23 @@
     {% endfor %}
 
 <div class="container">
-
+{% for a in articles %}
     <div class="panel panel-primary">
         <div class="panel-heading" style="padding-bottom: 0px;padding-top: 0px">
-            <label type="button" data-toggle="collapse" data-target="#demo">
-                <h3>{{ title }}</h3>
+            <label data-toggle="collapse" data-target="#demo">
+                <h3>{{ a.title }}</h3>
+                <small >时间：{{ a.create_time }}</small>
+                {# 根据文章找作者  a.user.username  #}
+                <small ><a href="{{ url_for('admin_1.user_space',id=current_user.id) }}">作者：{{ a.user.username }}</a></small>
+                <small >分类：{{ a.categories }}</small>
             </label>
         </div>
 
-        <div id="demo" class="collapse in">
-            {{ body_html|markdown|safe }}
+        <div id="demo"+loop.index class="collapse in">
+            {{ a.body_html|safe|markdown }}
         </div>
     </div>
-
-    <div class="panel panel-primary">
-        <div class="panel-heading" style="padding-bottom: 0px;padding-top: 0px">
-            <label type="button" data-toggle="collapse" data-target="#demo">
-                <h3>{{ title }}</h3>
-            </label>
-        </div>
-
-        <div id="demo" class="collapse in">
-            {{ body_html|markdown|safe }}
-        </div>
-    </div>
+{% endfor %}
 
 </div>
 

@@ -9,9 +9,8 @@ from application.models import Article
 @main_blue.route('/')
 @login_required# 如果你将这个装饰器放在视图上，它会保证你的当前用户是登录状态，并且在调用实际视图之前进行认证。
 def index():#    如果当前用户不是系统认证的登录状态，它将调用LoginManager.unauthorized回调。
-    a=Article.query.filter(Article.author=="123").all()
-
-    return render_template('index.html',body_html=a[1].body_html,title=a[1].title)
+    articles=Article.query.order_by(Article.create_time.desc()).all()
+    return render_template('index.html',articles=articles)
 
 
 @main_blue.route('/test')

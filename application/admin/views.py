@@ -1,25 +1,22 @@
-from . import admin_blue
+from . import admin_blue_1
 from .forms import ChangePsd,Upload_img
-from flask import session, render_template, redirect, flash, request, jsonify ,session
-from flask_login import login_required
+from flask import render_template, redirect, flash, request, jsonify ,session
+from flask_login import login_required,current_user
 from application import db
 from application.models import User
 import base64,os
-from werkzeug.utils import secure_filename
-
-
 
 # 个人主页
-@admin_blue.route('/userspace')
+@admin_blue_1.route('/userspace/<id>')
 @login_required
-def user_space():
+def user_space(id):
     return render_template("/admin/myspace.html")
 
 
 
 # 要判断邮箱是不是对应用户注册时用的邮箱...不然盗号太容易了。。。**************注意************
 # 找回密码/修改密码 (二合一)
-@admin_blue.route('/chg_psd', methods=['POST','GET'])
+@admin_blue_1.route('/chg_psd', methods=['POST','GET'])
 def chg_psd():
     fm=ChangePsd()
     if fm.validate_on_submit():
@@ -41,7 +38,7 @@ def chg_psd():
     else:
         return render_template("/admin/change_password.html",form=fm)
 
-@admin_blue.route('/getinfo')
+@admin_blue_1.route('/getinfo')
 def send_info():
     get_data = request.args.to_dict()
     request_type = get_data.get("request_type")
@@ -52,7 +49,13 @@ def send_info():
     elif request_type =="fans":
         pass
     elif request_type =="article":
-        pass
+        user = User.query.get(current_user.id)
+        temp={}
+        i=0
+        for a in user.articles:
+            temp[i]=a.title
+            i=i+1
+        return jsonify(temp)
     elif request_type =="info":
         query_user = User.query.filter_by(username=request_user).first()
 
@@ -72,7 +75,7 @@ def send_info():
     else:
         pass
 
-@admin_blue.route('/upload',methods=['POST','GET'])# 获取用户名-----气死
+@admin_blue_1.route('/upload',methods=['POST','GET'])# 获取用户名-----气死
 def upload():#          文件格式没做筛选
     form = Upload_img()
     if request.method=="POST":

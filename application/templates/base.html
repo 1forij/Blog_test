@@ -114,7 +114,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.username }}的个人空间<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a target="_blank" href="{{url_for('admin.user_space')}}">空间</a></li>
+            <li><a target="_blank" href="{{url_for('admin_1.user_space',id=current_user.id)}}">空间</a></li>
             <li><a target="_blank" href="#">关注列表</a></li>
             <li><a target="_blank" href="#">动态</a></li>
             <li role="separator" class="divider"></li>{# 分界线 #}

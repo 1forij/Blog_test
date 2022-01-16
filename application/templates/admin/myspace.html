@@ -20,6 +20,23 @@
 
             })
         });
+
+        $("#nav_article").click(function(){
+            $.get("http://127.0.0.1:5000/getinfo",{request_type:"article",request_user:{{ current_user.username }}},function (data) {
+                    var len = Object.getOwnPropertyNames(data).length
+                    if (len>4);     {# 超出4个弄个更多，点击进入一个网页，显示该用户的所有文章 #}
+                    else
+                    {
+                        for (var i=0;i<len;i++)
+                        {
+                            $("#a"+i).text(data[i])
+                        }
+                    }
+
+            })
+        });
+
+
     });
     </script>
 {% endblock %}
@@ -28,7 +45,7 @@
 {% block content %}
 <div class="container">
     <div class="jumbotron">
-        <a href="{{ url_for('admin.upload') }}">
+        <a href="{{ url_for('admin_1.upload') }}">
             <img id="profile" src="data:image/jpeg;base64,{{ current_user.user_img }}" alt="暂无头像(点击上传头像)" title="点击上传自定义头像" style="width: 147px;height: 147px" class="img-rounded">
         </a>
         <h1 style="display: inline;margin-left: 20px;",>{{ current_user.username }}</h1>
@@ -41,7 +58,7 @@
             <li id="nav_info"><a href="#info" data-toggle="tab">我的资料</a></li>
             <li id="nav_fovor"><a href="#fovor" data-toggle="tab">我的收藏</a></li>
             <li><a href="#" data-toggle="tab" style="background-color: greenyellow">修改个人信息</a></li>
-            <li><a href="{{ url_for('admin.chg_psd') }}" data-toggle="tab" style="background-color: greenyellow">修改密码</a></li>
+            <li><a href="{{ url_for('admin_1.chg_psd') }}" data-toggle="tab" style="background-color: greenyellow">修改密码</a></li>
         </ul>
         {# display box #}
         <div class="panel panel-default">
@@ -68,10 +85,10 @@
                 <div class="tab-pane fade" id="article">
                     {# 文章列表 #}
                     <div class="list-group">
-                      <a href="#" class="list-group-item">2</a>
-                      <a href="#" class="list-group-item">4</a>
-                      <a href="#" class="list-group-item">644</a>
-                      <a href="#" class="list-group-item">9</a>
+                      <a id="a1" href="#" class="list-group-item"></a>
+                      <a id="a2" href="#" class="list-group-item"></a>
+                      <a id="a3" href="#" class="list-group-item"></a>
+                      <a id="a4" href="#" class="list-group-item"></a>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="info">
